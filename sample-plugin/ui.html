@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>Extract Colors and Generate SCSS</h2>
+
+    <label for="keyword">Filter by keyword (optional):</label>
+    <input type="text" id="keyword" placeholder="Enter keyword to filter colors" /><br /><br />
+
+    <label for="prefix">Prefix (optional):</label>
+    <input type="text" id="prefix" placeholder="Enter prefix for variables" /><br /><br />
+
+    <label for="suffix">Suffix (optional):</label>
+    <input type="text" id="suffix" placeholder="Enter suffix for variables" /><br /><br />
+
+    <label for="find">Find text (optional):</label>
+    <input type="text" id="find" placeholder="Enter text to find in names" /><br /><br />
+
+    <label for="replace">Replace with (optional):</label>
+    <input type="text" id="replace" placeholder="Enter replacement text" /><br /><br />
+
+    <button id="extract-colors">Extract Colors</button>
+
+    <script>
+      document.getElementById('extract-colors').onclick = () => {
+        const keyword = document.getElementById('keyword').value
+        const prefix = document.getElementById('prefix').value
+        const suffix = document.getElementById('suffix').value
+        const find = document.getElementById('find').value
+        const replace = document.getElementById('replace').value
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'extract-colors',
+              keyword: keyword || '',
+              prefix: prefix || '',
+              suffix: suffix || '',
+              find: find || '',
+              replace: replace || '',
+            },
+          },
+          '*'
+        )
+      }
+
+      window.onmessage = (event) => {
+        if (event.data.pluginMessage.type === 'save-scss') {
+          const blob = new Blob([event.data.pluginMessage.scssContent], { type: 'text/plain' })
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = 'style.module.scss'
+          a.click()
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>Extract Local Variables</h2>
+
+    <button id="extract-local-variables">Extract Local Variables</button>
+
+    <script>
+      document.getElementById('extract-local-variables').onclick = () => {
+        parent.postMessage({ pluginMessage: { type: 'extract-local-variables' } }, '*')
+      }
+
+      window.onmessage = (event) => {
+        if (event.data.pluginMessage.type === 'save-local-variables') {
+          const localVariables = event.data.pluginMessage.localVariables
+
+          // 生成並下載 JSON 文件
+          const blob = new Blob([JSON.stringify(localVariables, null, 2)], { type: 'application/json' })
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = 'local-variables.json'
+          a.click()
+        }
+      }
+    </script>
+  </body>
+</html>

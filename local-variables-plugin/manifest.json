@@ -1,0 +1,8 @@
+{
+  "name": "Local Variables Plugin",
+  "id": "local-variables-plugin",
+  "api": "1.0.0",
+  "editorType": ["figma"],
+  "main": "code.js",
+  "ui": "ui.html"
+}
